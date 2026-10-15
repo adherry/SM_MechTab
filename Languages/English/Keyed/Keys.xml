@@ -3,5 +3,7 @@
 	<SM_MechWork.OptionCat>Mech Tab</SM_MechWork.OptionCat>
 	<SM_MechWork.MaxPriority>Maximum Priority</SM_MechWork.MaxPriority>
 	<SM_MechWork.ShowGroupInfo>Show Group Columns</SM_MechWork.ShowGroupInfo>
-	<SM_MechWork.ShowGroupInfoTip>Show the overseer and mech group columns. You will need to reload your save for this change to take effect.</SM_MechWork.ShowGroupInfoTip>	
+	<SM_MechWork.ShowGroupInfoTip>Show the overseer and mech group columns. You will need to reload your save for this change to take effect.</SM_MechWork.ShowGroupInfoTip>
+	<SM_MechWork.HideNonWorkingMechs>Hide Mechs Without Work</SM_MechWork.HideNonWorkingMechs>
+	<SM_MechWork.HideNonWorkingMechsTip>Hide mechs that cannot do any of the work types shown in the tab, such as combat mechs like the Lancer. Takes effect the next time you open the tab.</SM_MechWork.HideNonWorkingMechsTip>
 </LanguageData>
