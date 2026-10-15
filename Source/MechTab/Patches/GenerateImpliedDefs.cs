@@ -27,7 +27,8 @@ namespace SpaceMoth
 
 		private static IEnumerable<PawnColumnDef> ImpliedMechColumnDefs(bool hotReload)
 		{
-			PawnTableDef workTable = (MechTabModSettings.showGroupInfo == true) ? DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWork") : DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWorkSlim");
+			// Add the work columns to both table layouts: "Show Group Columns" can switch layouts later in the session.
+			PawnTableDef[] workTables = { DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWork"), DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWorkSlim") };
 			bool moveWorkTypeLabelDown = false;
 			foreach (WorkTypeDef workTypeDef in WorkTypeDefsUtility.WorkTypeDefsInPriorityOrder.Where<WorkTypeDef>((Func<WorkTypeDef, bool>)(d => d.visible)).Reverse<WorkTypeDef>())
 			{
@@ -43,7 +44,8 @@ namespace SpaceMoth
 					pawnColumnDef.workerClass = typeof(SM_PawnColumnWorker_WorkPriority);
 					pawnColumnDef.sortable = true;
 					pawnColumnDef.modContentPack = workTypeDef.modContentPack;
-					workTable.columns.Insert(workTable.columns.FindIndex((Predicate<PawnColumnDef>)(x => x.Worker is PawnColumnWorker_CopyPasteWorkPriorities)) + 1, pawnColumnDef);
+					foreach (PawnTableDef workTable in workTables)
+						workTable.columns.Insert(workTable.columns.FindIndex((Predicate<PawnColumnDef>)(x => x.Worker is PawnColumnWorker_CopyPasteWorkPriorities)) + 1, pawnColumnDef);
 					yield return pawnColumnDef;
 				}
 			}

@@ -39,6 +39,18 @@ namespace SpaceMoth
 			DefGenerator_GenerateImpliedDefs_MechsWork.Generate();
 		}
 
+		// Table def the current table was built from. The game keeps this window (and its table) for the whole session.
+		private PawnTableDef builtTableDef;
+
+		public override void PreOpen()
+		{
+			// "Show Group Columns" changed since the table was built: rebuild it with the other layout.
+			if (builtTableDef != null && builtTableDef != PawnTableDef)
+				Notify_ResolutionChanged();
+			builtTableDef = PawnTableDef;
+			base.PreOpen();
+		}
+
 		public override void DoWindowContents(Rect rect)
 		{
 			if (!ModLister.BiotechInstalled)
