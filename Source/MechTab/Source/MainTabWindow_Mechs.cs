@@ -12,9 +12,6 @@ namespace SpaceMoth
 	public class SM_MainTabWindow_MechsWork : MainTabWindow_PawnTable
 	{
 		private const int SpaceBetweenPriorityArrowsAndWorkLabels = 40;
-		private List<Color> cachedColors = new List<Color>();
-		private const int SetColorButtonHeight = 32;
-		private const int SetColorButtonWidth = 240;
 		protected override float ExtraTopSpace => 40f;
 
 		protected override PawnTableDef PawnTableDef => (MechTabModSettings.showGroupInfo == true)?DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWork"): DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWorkSlim");
@@ -35,14 +32,6 @@ namespace SpaceMoth
 					return true;
 			}
 			return false;
-		}
-
-		public override void PostOpen()
-		{
-			base.PostOpen();
-			this.cachedColors = DefDatabase<ColorDef>.AllDefsListForReading.Select<ColorDef, Color>((Func<ColorDef, Color>)(c => c.color)).ToList<Color>();
-			this.cachedColors.AddRange(Find.FactionManager.AllFactionsVisible.Select<Faction, Color>((Func<Faction, Color>)(f => f.Color)));
-			this.cachedColors.SortByColor<Color>((Func<Color, Color>)(c => c));
 		}
 
 		public SM_MainTabWindow_MechsWork()
