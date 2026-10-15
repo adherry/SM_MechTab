@@ -12,6 +12,7 @@ namespace MechTab.Source
 	{
 		public static int maxPriority = 4;
 		public static bool showGroupInfo = false;
+		public static bool hideNonWorkingMechs = false;
 
 		// buffers
 		private static string _maxPriorityBuffer = maxPriority.ToString();
@@ -29,6 +30,8 @@ namespace MechTab.Source
 
 			options.CheckboxLabeled("SM_MechWork.ShowGroupInfo".Translate(), ref showGroupInfo, "SM_MechWork.ShowGroupInfoTip".Translate());
 
+			options.CheckboxLabeled("SM_MechWork.HideNonWorkingMechs".Translate(), ref hideNonWorkingMechs, "SM_MechWork.HideNonWorkingMechsTip".Translate());
+
 			options.End();
 		}
 
@@ -36,6 +39,7 @@ namespace MechTab.Source
 		{
 			Scribe_Values.Look(ref maxPriority, "MaxPriority", 4);
 			Scribe_Values.Look(ref showGroupInfo, "ShowGroupInfo", false);
+			Scribe_Values.Look(ref hideNonWorkingMechs, "HideNonWorkingMechs", false);
 		}
 	}
 

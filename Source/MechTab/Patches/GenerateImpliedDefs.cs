@@ -11,6 +11,9 @@ namespace SpaceMoth
 	{
 		private static bool m_Generated = false;
 
+		// Work types that got a column in the mech work table.
+		public static HashSet<WorkTypeDef> ColumnWorkTypes = new HashSet<WorkTypeDef>();
+
 		public static void Generate()
 		{
 			if (m_Generated == false)
@@ -30,6 +33,7 @@ namespace SpaceMoth
 			{
 				if (CheckWorkTypeMechValid(workTypeDef) == true)
 				{
+					ColumnWorkTypes.Add(workTypeDef);
 					moveWorkTypeLabelDown = !moveWorkTypeLabelDown;
 					string defName = "MechWorkPriority_" + workTypeDef.defName;
 					PawnColumnDef pawnColumnDef = hotReload ? DefDatabase<PawnColumnDef>.GetNamed(defName, false) ?? new PawnColumnDef() : new PawnColumnDef();

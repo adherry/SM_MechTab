@@ -19,7 +19,23 @@ namespace SpaceMoth
 
 		protected override PawnTableDef PawnTableDef => (MechTabModSettings.showGroupInfo == true)?DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWork"): DefDatabase<PawnTableDef>.GetNamed("SM_PawnTable_MechsWorkSlim");
 
-		protected override IEnumerable<Pawn> Pawns => Find.CurrentMap.mapPawns.PawnsInFaction(Faction.OfPlayer).Where<Pawn>((Func<Pawn, bool>)(p => p.RaceProps.IsMechanoid && p.OverseerSubject != null));
+		protected override IEnumerable<Pawn> Pawns => Find.CurrentMap.mapPawns.PawnsInFaction(Faction.OfPlayer).Where<Pawn>((Func<Pawn, bool>)(p => p.RaceProps.IsMechanoid && p.OverseerSubject != null && (MechTabModSettings.hideNonWorkingMechs == false || HasWorkColumn(p))));
+
+		// True if the mech can do at least one work type that has a column in this tab.
+		// Combat mechs (e.g. Lancer) have no work types; some modded mechs only have hidden ones.
+		private static bool HasWorkColumn(Pawn pawn)
+		{
+			List<WorkTypeDef> workTypes = pawn.RaceProps.mechEnabledWorkTypes;
+			if (workTypes == null)
+				return false;
+
+			for (int index = 0; index < workTypes.Count; ++index)
+			{
+				if (DefGenerator_GenerateImpliedDefs_MechsWork.ColumnWorkTypes.Contains(workTypes[index]))
+					return true;
+			}
+			return false;
+		}
 
 		public override void PostOpen()
 		{
@@ -67,9 +83,11 @@ namespace SpaceMoth
 			int num2 = Current.Game.playSettings.useWorkPriorities ? 1 : 0;
 			if (num1 != num2)
 			{
-				foreach (Pawn pawn in Pawns)
+				// Same as vanilla: the setting is global, so notify every player pawn, not only the mechs listed in this tab.
+				foreach (Pawn pawn in PawnsFinder.AllMapsWorldAndTemporary_Alive)
 				{
-					pawn.workSettings.Notify_UseWorkPrioritiesChanged();
+					if (pawn.Faction == Faction.OfPlayer && pawn.workSettings != null)
+						pawn.workSettings.Notify_UseWorkPrioritiesChanged();
 				}
 			}
 			if (Current.Game.playSettings.useWorkPriorities)
